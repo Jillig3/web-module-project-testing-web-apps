@@ -1,23 +1,33 @@
 import React from 'react';
 import {render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import ContactForm from './ContactForm';
 
 test('renders without errors', ()=>{
-    
+    render(<ContactForm/>);
 });
 
 test('renders the contact form header', ()=> {
-    
+    render(<ContactForm/>);
+    const headerEl = screen.queryByText(/contact form/i);
+    expect(headerEl).toBeInTheDocument();
 });
 
 test('renders ONE error message if user enters less then 5 characters into firstname.', async () => {
-    
+    render(<ContactForm/>);
+    const firstNameInput = screen.getAllByLabelText("First Name*");
+    // userEvent.type(firstNameInput, "Jacob");
+    // expect(firstNameInput).toBeGreaterThanOrEqual(5);
 });
 
 test('renders THREE error messages if user enters no values into any fields.', async () => {
-    
+    render(<ContactForm/>);
+    // const firstNameInput = screen.getAllByLabelText("First Name*");
+    // const lastNameInput = screen.getAllByLabelText("Last Name*");
+    // const emailInput = screen.getAllByLabelText("Email*");
+    // expect(firstNameInput).toBeGreaterThanOrEqual(1);
+    // expect(lastNameInput).toBeGreaterThanOrEqual(1);
+    // expect(emailInput).toBeGreaterThanOrEqual(1);
 });
 
 test('renders ONE error message if user enters a valid first name and last name but no email.', async () => {
@@ -37,5 +47,24 @@ test('renders all firstName, lastName and email text when submitted. Does NOT re
 });
 
 test('renders all fields text when all fields are submitted.', async () => {
-    
+    render(<ContactForm/>);
+    const fName = "Jacob";
+    const lName = "Illig";
+    const email = "test@test.com"
+    const firstNameInput = screen.getByLabelText("First Name*");
+    userEvent.type(firstNameInput, fName);
+
+    const lastNameInput = screen.getByLabelText("Last Name*");
+    userEvent.type(lastNameInput, lName);
+
+    const emailInput = screen.getByLabelText("Email*");
+    userEvent.type(emailInput, email);
+
+    const button = screen.getByRole("button");
+    userEvent.click(button);
+
+    // await waitFor(()=> {
+    //     const contactFeedback = await screen.findByText(fName);
+    //     expect(contactFeedback).toBeInTheDocument();
+    // })
 });
